@@ -1,0 +1,4 @@
+eclipse.preferences.version=1
+org.jboss.tools.common.validator.enableBlock=disabled
+org.jboss.tools.jst.web.kb.validator.problem.kbCapabilitiesAreNotEnabledInJavaModule=warning
+org.jboss.tools.jst.web.kb.validator.problem.requiredKbCapabilitiesAreMissing=warning

@@ -1,0 +1,23 @@
+<web-app>
+	<display-name>OAuth2 Client Application</display-name>
+
+	<filter>
+		<filter-name>InterceptFilter</filter-name>
+		<filter-class>com.dolphine.oauth2.client.view.InterceptFilter</filter-class>		
+	</filter>
+	<filter-mapping>
+		<filter-name>InterceptFilter</filter-name>
+		<url-pattern>/private/*</url-pattern>
+	</filter-mapping>
+
+	<!-- OAuth2 AuthorizationCode Callback  -->
+	<servlet>
+		<servlet-name>AuthorizationCodeCallback</servlet-name>
+		<servlet-class>com.dolphine.oauth2.client.view.AuthorizationCodeCallback</servlet-class>	
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AuthorizationCodeCallback</servlet-name>
+		<url-pattern>/authorizationCallback</url-pattern>
+	</servlet-mapping>
+
+</web-app>
