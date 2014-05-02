@@ -1,0 +1,4 @@
+OAuth2ClientSample/src/main/resources/facebook.properties
+OAuth2ClientSample/src/main/resources/google.properties
+OAuth2ClientSample/target/classes/facebook.properties
+OAuth2ClientSample/target/classes/google.properties
