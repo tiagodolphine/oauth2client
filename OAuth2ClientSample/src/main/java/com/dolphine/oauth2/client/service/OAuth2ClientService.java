@@ -124,6 +124,10 @@ public class OAuth2ClientService {
 
 		WebResource webResource = authenticatedClient.resource(url);
 		ClientResponse response = webResource.get(ClientResponse.class);
+		if(!response.getClientResponseStatus().equals(ClientResponse.Status.OK)){
+			accessToken.setAccessToken(null);		
+			authenticatedClient.removeAllFilters();
+		}
 		String output = response.getEntity(String.class);
 		return output;
 	}

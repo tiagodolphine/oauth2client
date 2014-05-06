@@ -35,7 +35,7 @@ public class InterceptFilter implements Filter {
 			String authorizationServer=httpServletRequest.getParameter(Constants.AUTHORIZATION_SERVER_PARAMETER);
 			OAuth2Context context = (OAuth2Context)httpServletRequest.getSession().getAttribute(Constants.OAUTH2_CONTEXT_PARAMETER);
 			
-			if(context==null || (authorizationServer!=null && !context.getAuthorizationServer().equals(authorizationServer))){
+			if(context==null || context.getOauth2Token()==null || context.getOauth2Token().getAccessToken()==null || (authorizationServer!=null && !context.getAuthorizationServer().equals(authorizationServer))){
 				context = new OAuth2Context();
 				context.setAuthorizationServer(authorizationServer!=null?authorizationServer:"google");
 				httpServletRequest.getSession().setAttribute(Constants.OAUTH2_CONTEXT_PARAMETER, context);
