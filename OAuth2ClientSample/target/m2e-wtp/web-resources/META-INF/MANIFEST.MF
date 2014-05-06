@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Built-By: Tiago Dolphine
-Build-Jdk: 1.7.0_05
+Built-By: dolphine
+Build-Jdk: 1.7.0_51
 Created-By: Maven Integration for Eclipse
 

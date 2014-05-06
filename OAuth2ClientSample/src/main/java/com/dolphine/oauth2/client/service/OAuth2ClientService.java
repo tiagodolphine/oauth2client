@@ -9,18 +9,18 @@ import java.util.Map;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.json.JSONObject;
+
 import com.dolphine.oauth2.client.dto.AccessToken;
 import com.dolphine.oauth2.client.dto.Configuration;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.ClientFilter;
-import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class OAuth2ClientService {
@@ -40,8 +40,7 @@ public class OAuth2ClientService {
 
 	public OAuth2ClientService() {
 		if (client == null) {
-			ClientConfig clientConfig = new DefaultClientConfig();
-			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+			ClientConfig clientConfig = new DefaultClientConfig();		
 			client = Client.create(clientConfig);
 		}
 	}
@@ -82,34 +81,45 @@ public class OAuth2ClientService {
 			AccessToken accessToken=null;
 		
 			boolean isJsonAccessToken = response.getType()!=null && response.getType().isCompatible(MediaType.APPLICATION_JSON_TYPE);
+			//response as string
+			output = response.getEntity(String.class);
 			//response is JSON
 			if(isJsonAccessToken){
 				try{	
-					accessToken = response.getEntity(AccessToken.class);
+					accessToken = new AccessToken();					
+					JSONObject obj = new JSONObject(output);					
+					accessToken.setAccessToken(obj.getString(AccessToken.ACCESS_TOKEN));
+					accessToken.setExpiresIn(AccessToken.EXPIRES_IN);
+					accessToken.setRefreshToken(AccessToken.REFRESH_TOKEN);
+					accessToken.setTokenType(AccessToken.TOKEN_TYPE);
+					
 				}catch(ClientHandlerException e){
 					System.err.println("Json is not an AccessToken");
 					isJsonAccessToken=false;
 				}					
 			}
 			//response is Query parameter
-			if(!isJsonAccessToken){
-				output = response.getEntity(String.class);
+			if(!isJsonAccessToken){			
 				accessToken =new AccessToken();				
-				accessToken.setAccessToken(getQueryMap(output).get("access_token"));
+				accessToken.setAccessToken(getQueryMap(output).get(AccessToken.ACCESS_TOKEN));
 			}
 			System.out.println("Received Access Token:");
 			System.out.println(accessToken);					
 			return accessToken;
 	}
 	
-	public static Map<String, String> getQueryMap(String query)  
+	private Map<String, String> getQueryMap(String query)  
 	{  
 	    String[] params = query.split("&");  
 	    Map<String, String> map = new HashMap<String, String>();  
 	    for (String param : params)  
 	    {  
-	        String name = param.split("=")[0];  
-	        String value = param.split("=")[1];  
+	    	String[] valueEntry = param.split("=");
+	    	if(valueEntry.length!=2){
+	    		continue;
+	    	}
+	        String name = valueEntry[0];  
+	        String value =valueEntry[1];  
 	        map.put(name, value);  
 	    }  
 	    return map;  

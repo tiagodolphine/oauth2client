@@ -1,17 +1,16 @@
 package com.dolphine.oauth2.client.dto;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
 public class AccessToken {
-	@JsonProperty("access_token")
+	
+	public final static String ACCESS_TOKEN="access_token";	
+	public final static String REFRESH_TOKEN="refresh_token";	
+	public final static String EXPIRES_IN="expires_in";	
+	public final static String TOKEN_TYPE="token_type";
+		
 	private String accessToken;
-	@JsonProperty("refresh_token")
 	private String refreshToken;
-	@JsonProperty("expires_in")
 	private String expiresIn;
-	@JsonProperty("token_type")
 	private String tokenType;
 	
 	public String getAccessToken() {
